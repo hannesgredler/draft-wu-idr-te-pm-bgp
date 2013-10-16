@@ -141,7 +141,8 @@
       Engineering Database(TED) and ALTO server, this document describes
       extensions to BGP protocol, that can be used to distribute network
       performance information (such as link delay, delay variation, packet
-      loss, residual bandwidth, and available bandwidth).</t>
+      loss, residual bandwidth, available bandwidth, and utilized 
+      bandwidth).</t>
     </abstract>
   </front>
 
@@ -173,8 +174,8 @@
       latency, latency variation, packet loss and bandwidth into TED and ALTO
       server, this document describes extensions to BGP protocol, that can be
       used to distribute network performance information (such as link delay,
-      delay variation, packet loss, residual bandwidth, and available
-      bandwidth).</t>
+      delay variation, packet loss, residual bandwidth, available
+      bandwidth, and utilized bandwidth).</t>
     </section>
 
     <section title="Conventions used in this document">
@@ -259,11 +260,11 @@
       announced as attribute in the BGP-LS attribute (defined in
       [I.D-ietf-idr- ls-distribution]) to distribute network performance
       information. The extensions in this document build on the ones provided
-      in BGP-LS [I.D -ietf-idr-ls-distribution] and BGP-4 [RFC4271].</t>
+      in BGP-LS [I.D-ietf-idr-ls-distribution] and BGP-4 [RFC4271].</t>
 
       <t>BGP-LS attribute defined in [I.D-ietf-idr-ls-distribution] has nested
       TLVs which allow the BGP-LS attribute to be readily extended. This
-      document proposes six additional TLVs as its attributes:<figure>
+      document proposes seven additional TLVs as its attributes:<figure>
           <artwork>
    Type            Value
 
@@ -278,14 +279,26 @@
    TBD5        Unidirectional Residual Bandwidth
 
    TBD6        Unidirectional Available Bandwidth
+   
+   TBD7        Unidirectional Utilized Bandwidth
 </artwork>
         </figure><vspace blankLines="1" /><!--< - - !
-When this draft(v-01) was presented in the IDR WG session of Berlin meeting,John Scudder suggested to define new attributes(i.e.,link utilization attribute, channel throughput attribute) added in the previous version of this draft in the draft-ietf-isis-te-metric-extensions. After Berlin meeting, Hannes Gredler help initiate discussion with authors of IGP drafts(i.e., draft-ietf-isis-te-metric-extensions and draft-ietf-ospf-te-metric-extensions) on why two additional attributes should be added into IGPdraft. After a few offline discussion with authors of IGP drafts, specially with John Drake, David Ward, Alia Atlas,Stefano Previdi,it was roughly agreed that 
+When this draft(v-01) was presented in the IDR WG session of Berlin meeting,John Scudder 
+suggested to define new attributes(i.e.,link utilization attribute, channel throughput 
+attribute) added in the previous version of this draft in the 
+draft-ietf-isis-te-metric-extensions. After Berlin meeting, Hannes Gredler help initiate 
+discussion with authors of IGP drafts(i.e., draft-ietf-isis-te-metric-extensions and 
+draft-ietf-ospf-te-metric-extensions) on why two additional attributes should be added 
+into IGPdraft. After a few offline discussion with authors of IGP drafts, specially 
+with John Drake, David Ward, Alia Atlas,Stefano Previdi,it was roughly agreed that 
 
 a.drop channel throughput attribute since it is node attribute rather than link attribute.
 b.and add link utilization attribute into IGP drafts.
 
-However the open issue is whether defining total Link Utilization as Currently Utilized Bandwidth or as Currently Utilized Bandwidth / Maximum Bandwidth. Until this openissue is resolved, the link utilization attribute will the added into the update of this draft as seventh additional TLV.
+However the open issue is whether defining total Link Utilization as Currently Utilized 
+Bandwidth or as Currently Utilized Bandwidth / Maximum Bandwidth. Until this openissue 
+is resolved, the link utilization attribute will the added into the update of this draft 
+as seventh additional TLV.
 
 - - >--></t>
 
@@ -312,11 +325,11 @@ However the open issue is whether defining total Link Utilization as Currently U
       used for failover purposes. The A bit was intentionally omitted from
       some TLVs to help mitigate oscillations.</t>
 
-      <t>Consistent with existing ISIS TE specifications [ISIS-TE- METRIC],
+      <t>Consistent with existing ISIS TE specifications [ISIS-TE-METRIC],
       the bandwidth advertisements,the delay and delay variation
       advertisements, packetloss defined in this document MUST be encoded in
       the same unit as one defined in IS-IS Extended IS Reachability sub-TLVs
-      [ISIS-TE- METRIC]. All values (except residual bandwidth) MUST be
+      [ISIS-TE-METRIC]. All values (except residual bandwidth) MUST be
       calculated as rolling averages where the averaging period MUST be a
       configurable period of time.</t>
     </section>
@@ -357,11 +370,16 @@ However the open issue is whether defining total Link Utilization as Currently U
    |    xxxx    | Unidirectional      |    22/xx     | [ISIS-TE]/4.6   |
    |            |Available Bandwidth  |              |                 |
    |            |                     |              |                 |
+   |    xxxx    | Unidirectional      |    22/xx     | [ISIS-TE]/4.7   |
+   |            |Utilized Bandwidth   |              |                 |
    +------------+---------------------+--------------+-----------------+
 
                        Table 1: Link Attribute TLVs</artwork>
         </figure><vspace blankLines="1" /><!--< - - !
-The open issue is whether defining total Link Utilization as Currently Utilized Bandwidth or as Currently Utilized Bandwidth / Maximum Bandwidth? We will add link utilization attribute as seventh additional attribute(e.g.,Currently Utilized Bandwidth) when the open issue is resolved.
+The open issue is whether defining total Link Utilization as Currently 
+Utilized Bandwidth or as Currently Utilized Bandwidth / Maximum Bandwidth? 
+We will add link utilization attribute as seventh additional attribute
+(e.g.,Currently Utilized Bandwidth) when the open issue is resolved.
 - - >--></t>
     </section>
 
@@ -558,6 +576,12 @@ The open issue is whether defining total Link Utilization as Currently Utilized 
             use these TE performance metrics.</t>
           </list></t>
       </section>
+      <section title="draft-wu-idr-te-pm-bgp-02">
+      <t>The following are the major changes compared to previous version
+      02:<vspace blankLines="1" /><list style="symbols">
+      <t>Add Unidirectional utilized bandwidth as the seventh metric carried in
+      the new BGP attribute. </t>
+      </list></t>
     </section>
   </back>
 </rfc>
