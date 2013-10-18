@@ -582,6 +582,7 @@ We will add link utilization attribute as seventh additional attribute
       <t>Add Unidirectional utilized bandwidth as the seventh metric carried in
       the new BGP attribute. </t>
       </list></t>
+      </section>
     </section>
   </back>
 </rfc>
