@@ -4,7 +4,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
-<rfc category="std" docName="draft-wu-idr-te-pm-bgp-03" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-idr-te-pm-bgp-00" ipr="trust200902">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
   <?rfc toc="yes" ?>
@@ -175,7 +175,10 @@
       server, this document describes extensions to BGP protocol, that can be
       used to distribute network performance information (such as link delay,
       delay variation, packet loss, residual bandwidth, available
-      bandwidth, and utilized bandwidth).</t>
+      bandwidth, and utilized bandwidth). The network performance information
+      can be distributed in the same way as link state information distribution
+      ,i.e.,either directly or via a peer BGP speaker (see figure 1 of 
+      [I.D-ietf-idr-ls-distribution]).</t>
     </section>
 
     <section title="Conventions used in this document">
@@ -186,18 +189,18 @@
     </section>
 
     <section title="Use Cases">
-      <section title="MPLS-TE with PCE">
-        <t>In inter-AS path computation, PCE in each AS participant in
-        different IGP. In Hierarchy of PCE, A child PCE must be configured
-        with the address of its parent PCE[RFC6805].Configuration system is
-        challenged by handling changes in parent PCE identities and coping
-        with failure events, especially when parent PCE and child PCE are not
-        a part of the same routing domain.</t>
+      <section title="MPLS-TE with H-PCE">
+        <t>For inter-AS path computation, the Hierachical PCE (H-PCE)[RFC6805]
+        may be used to compute the optimal sequence of domains. Within the H-PCE
+        architecture, the child PCE communicates domain connectivity information
+        to the parent PCE, and the parent PCE will use this information to 
+        compute a multi-domain path based on the optimal TE links between domains
+        [I.D-ietf-pce-hierachy-extensions] for the end-to-end path. </t>
 
-        <t>The following figure shows how a PCE can get its TE performance
-        information beyond that contained in the LINK_STATE attributes
-        [I.D-ietf-idr-ls-distribution] using the mechanism described in this
-        document.</t>
+        <t>The following figure demonstrates how a parent PCE may obtain TE 
+        performance information beyond that contained in the LINK STATE
+        attributes [I.D-ietf-idr-ls-distribution] using the mechanism described
+        in this document. </t>
 
         <figure>
           <artwork>
@@ -258,7 +261,7 @@
     <section title="Carrying TE Performance information in BGP">
       <t>This document proposes new BGP TE performance TLVs that can be
       announced as attribute in the BGP-LS attribute (defined in
-      [I.D-ietf-idr- ls-distribution]) to distribute network performance
+      [I.D-ietf-idr-ls-distribution]) to distribute network performance
       information. The extensions in this document build on the ones provided
       in BGP-LS [I.D-ietf-idr-ls-distribution] and BGP-4 [RFC4271].</t>
 
@@ -305,7 +308,8 @@ as seventh additional TLV.
       <t>As can be seen in the list above, the TLVs described in this document
       carry different types of network performance information. These TLVs
       include a bit called the Anomalous (or "A") bit at the left-most bit
-      after length field of each TLV. The other bits in the first octets after
+      after length field of each TLV defined in figure 4 of 
+      [I.D-ietf-idr-ls-distribution]. The other bits in the first octets after
       length field of each TLV is reserved for future use. When the A bit is
       clear (or when the TLV does not include an A bit), the TLV describes
       steady state link performance. This information could conceivably be
@@ -330,16 +334,20 @@ as seventh additional TLV.
       advertisements, packetloss defined in this document MUST be encoded in
       the same unit as one defined in IS-IS Extended IS Reachability sub-TLVs
       [ISIS-TE-METRIC]. All values (except residual bandwidth) MUST be
+      obtained by a filter that is reasonably representative of an average or 
       calculated as rolling averages where the averaging period MUST be a
-      configurable period of time.</t>
+      configurable period of time. The measurement interval, any filter 
+      coefficients, and any advertisement intervals MUST be configurable per 
+      sub-TLV in the same way as ones defined in section 5 of [ISIS-TE-METRIC]
+      . </t>
     </section>
 
     <section title="Attribute TLV Details">
       <t>Link attribute TLVs defined in section 3.2.2 of [I-D.ietf-idr-ls-
       distribution]are TLVs that may be encoded in the BGP-LS attribute with a
       link NLRI. Each 'Link Attribute' is a Type/Length/ Value (TLV) triplet
-      formatted as defined in Section 3.1 of [I-D.ietf-id r- ls-distribution].
-      The format and semantics of the 'value' fields in some 'Link Attribute'
+      formatted as defined in Section 3.1 of [I-D.ietf-idr-ls-distribution].
+      The format and semantics of the 'value' fields in 'Link Attribute'
       TLVs correspond to the format and semantics of value fields in IS-IS
       Extended IS Reachability sub-TLVs, defined in [RFC5305]. Although the
       encodings for 'Link Attribute' TLVs were originally defined for IS-IS,
@@ -553,34 +561,36 @@ We will add link utilization attribute as seventh additional attribute
                     value="http://tools.ietf.org/html/draft-ietf-alto-protocol-16" />
       </reference>
     </references>
+    
+     <reference anchor="I.D-ietf-pce-hierarchy-extensions">
+        <front>
+          <title>Extensions to Path Computation Element Communication Protocol
+          (PCEP) for Hierarchical Path Computation Elements (PCE)
+          </title>
+
+          <author fullname="F.Zhang" initials="F." surname="Zhang">
+            <organization></organization>
+          </author>
+
+          <date month="August" year="2013" />
+        </front>
+
+        <seriesInfo name="ID"
+                    value="http://tools.ietf.org/html/draft-ietf-pce-hierarchy-extensions-00" />
+      </reference>
+    </references>
 
     <section title="Change Log">
       <t>Note to the RFC-Editor: please remove this section prior to
       publication as an RFC.</t>
 
-      <section title="draft-wu-idr-te-pm-bgp-02">
-        <t>The following are the major changes compared to previous version
-        01:<vspace blankLines="1" /><list style="symbols">
-            <t>Taking out link utilization metric and channel throughput
-            metric from this version and will add link utilization metric back
-            to the update when there was agreement on what measurement unit is
-            used for link utilization.</t>
-
-            <t>Some additional texts in BGP extension section 4 to explain how
-            to position 'A' bit in the BGP TE performance TLV.</t>
-
-            <t>Add two editor notes to explain the status of this draft and
-            open issue that need be resolved.</t>
-
-            <t>Some additional text in the use case sections to clarify how to
-            use these TE performance metrics.</t>
-          </list></t>
-      </section>
-      <section title="draft-wu-idr-te-pm-bgp-02">
+      <section title="draft-ietf-idr-te-pm-bgp-00">
       <t>The following are the major changes compared to previous version
       02:<vspace blankLines="1" /><list style="symbols">
-      <t>Add Unidirectional utilized bandwidth as the seventh metric carried in
-      the new BGP attribute. </t>
+      <t>Update PCE case in section 3.1 </t>
+      <t>Add some texts in section 1 and section 4 to clarify
+      from where to distribute pm info and measurement interval, method.
+      </t>
       </list></t>
       </section>
     </section>
