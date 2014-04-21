@@ -160,15 +160,13 @@
       gather information about the topologies and capabilities of the
       network.</t>
 
-      <t>With the growth of network virtualization technology, the needs for
-      inter-connection between various overlay technologies (e.g. Enterprise
-      BGP/MPLS IP VPNs) in the Wide Area Network (WAN) become important. The
+      <t>With the growth of network virtualization technology, the
       Network performance or QoS requirements such as latency, limited
-      bandwidth, packet loss, and jitter, are all critical factors that must
-      be taken into account in the end to end path computation
-      ([I-D.ietf-pce-pcep-service-aware])and selection which enable
-      establishing segment overlay tunnel between overlay nodes and stitching
-      them together to compute end to end path.</t>
+      bandwidth, packet loss, and jitter, are all critical factors for real 
+      traffic that must be taken into account in the end to end path 
+      computation and selection ([I-D.ietf-pce-pcep-service-aware])which 
+      enable optimizing resource usage and degrading gracefully during period
+      of heavy load.</t>
 
       <t>In order to populate network performance information like link
       latency, latency variation, packet loss and bandwidth into TED and ALTO
